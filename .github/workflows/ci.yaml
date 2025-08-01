@@ -69,3 +69,20 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           docker push 905418417806.dkr.ecr.ap-south-1.amazonaws.com/dhruv_great_ecr:latest
+
+      - name: Deploy to EC2 
+        if: success()
+        uses: appleboy/ssh-action@v2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY
+            aws configure set default.region ap-south-1
+            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 905418417806.dkr.ecr.ap-south-1.amazonaws.com
+            docker pull 905418417806.dkr.ecr.ap-south-1.amazonaws.com/dhruv_great_ecr:latest
+            docker stop my-app || true
+            docker rm my-app || true
+            docker run -d -p 80:5000 --name my-app 905418417806.dkr.ecr.ap-south-1.amazonaws.com/dhruv_great_ecr:latest
