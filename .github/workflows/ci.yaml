@@ -64,7 +64,7 @@ jobs:
 
       - name: Tag Docker image
         run: |
-          docker tag godson_ecr:latest1 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest1
+          docker tag godson_ecr:latest 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest1
 
       - name: Push Docker image to ECR
         run: |
