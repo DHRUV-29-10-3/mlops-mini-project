@@ -64,11 +64,11 @@ jobs:
 
       - name: Tag Docker image
         run: |
-          docker tag godson_ecr:latest 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest1234
+          docker tag godson_ecr:latest 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest123
 
       - name: Push Docker image to ECR
         run: |
-          docker push 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest1234
+          docker push 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest123
 
       - name: Deploy to EC2 
         if: success()
@@ -82,7 +82,7 @@ jobs:
             aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY}}
             aws configure set default.region ap-south-1
             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 905418417806.dkr.ecr.ap-south-1.amazonaws.com
-            docker pull 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest1234
+            docker pull 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest123
             docker stop my-app || true
             docker rm my-app || true
-            docker run -p 80:5000 -e DAGSHUB_PAT=767dca5a4da6695de471a4a52da92018b9319ab2 --name my-app 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest1234
+            docker run -p 80:5000 -e DAGSHUB_PAT=767dca5a4da6695de471a4a52da92018b9319ab2 --name my-app 905418417806.dkr.ecr.ap-south-1.amazonaws.com/godson_ecr:latest123
